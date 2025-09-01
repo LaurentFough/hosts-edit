@@ -1,4 +1,4 @@
-# `hosts` Tab Completion
+# `hosts-edit` Tab Completion
 
 ## Homebrew
 
@@ -10,52 +10,52 @@ programs](https://docs.brew.sh/Shell-Completion).
 
 ## npm, bpkg, Make
 
-When `hosts` is installed with `npm`, `bpkg`, or Make, an install hook will
+When `hosts-edit` is installed with `npm`, `bpkg`, or Make, an install hook will
 check the environment and attempt to install completions. If it's successful,
 you should see a message similar to:
 
 ```bash
-Completion installed: /usr/local/etc/bash_completion.d/hosts
-Completion installed: /usr/local/share/zsh/site-functions/_hosts
+Completion installed: /usr/local/etc/bash_completion.d/hosts-edit
+Completion installed: /usr/local/share/zsh/site-functions/_hosts-edit
 ```
 
 If completion is working after installing through any of these methods, then
 you don't need to do anything else.
 
-## `hosts completions`
+## `hosts-edit completions`
 
-The `hosts completions` subcommand can be used for installing and uninstalling
+The `hosts-edit completions` subcommand can be used for installing and uninstalling
 completion scripts. Depending on your configuration, you might need to use
 `sudo` to install completion scripts easily:
 
 ```bash
-> sudo hosts completions check
+> sudo hosts-edit completions check
 Completion scripts not found.
 
-> sudo hosts completions install
-Completion script installed: /usr/share/bash-completion/completions/hosts
-Completion script installed: /usr/local/share/zsh/site-functions/_hosts
+> sudo hosts-edit completions install
+Completion script installed: /usr/share/bash-completion/completions/hosts-edit
+Completion script installed: /usr/local/share/zsh/site-functions/_hosts-edit
 
-> sudo hosts completions check
-Exists: /usr/share/bash-completion/completions/hosts
-Exists: /usr/local/share/zsh/site-functions/_hosts
+> sudo hosts-edit completions check
+Exists: /usr/share/bash-completion/completions/hosts-edit
+Exists: /usr/local/share/zsh/site-functions/_hosts-edit
 
-> sudo hosts completions uninstall
-Completion script removed: /usr/share/bash-completion/completions/hosts
-Completion script removed: /usr/local/share/zsh/site-functions/_hosts
+> sudo hosts-edit completions uninstall
+Completion script removed: /usr/share/bash-completion/completions/hosts-edit
+Completion script removed: /usr/local/share/zsh/site-functions/_hosts-edit
 ```
 
-If you installed `hosts` manually by downloading just the `hosts` script,
+If you installed `hosts-edit` manually by downloading just the `hosts-edit` script,
 the completion scripts won't be immediately available for
-`hosts completions install`. You can try installing the completions with
+`hosts-edit completions install`. You can try installing the completions with
 the `--download` flag, which will get the latest version from GitHub:
 
 ```bash
-sudo hosts completions install --download
+sudo hosts-edit completions install --download
 ```
 
-`hosts completions` will try to determine the completion script directories
-from your environment. If `hosts completions` isn't able to install
+`hosts-edit completions` will try to determine the completion script directories
+from your environment. If `hosts-edit completions` isn't able to install
 the completion scripts, you can try installing them manually.
 
 ## Manual Installation
