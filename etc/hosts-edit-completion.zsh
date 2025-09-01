@@ -1,8 +1,8 @@
-#compdef hosts
+#compdef hosts-edit
 
-__hosts_subcommands() {
+__hosts-edit_subcommands() {
   local _commands
-  _commands=($(hosts commands --raw))
+  _commands=($(hosts-edit commands --raw))
   local _completions
   _completions=(${_commands[@]})
 
@@ -23,4 +23,4 @@ __hosts_subcommands() {
   fi
 }
 
-__hosts_subcommands "$@"
+__hosts-edit_subcommands "$@"
