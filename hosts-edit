@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/opt/homebrew/bin/bash
 
 #= ##############################################################################
 #= 
@@ -43,13 +43,11 @@
 #= ##############################################################################
 
 
-if [[ -z $_DEBUG ]]; then
-	set -x
-elif [[ -z $_USE_DEBUG ]]; then
-	set -x
-else
-	set +x
-fi
+# if [[ -z $_DEBUG ]]; then
+# 	set -x
+# else
+# 	set +x
+# fi
 
 set -o nounset
 set -o errexit
@@ -495,7 +493,7 @@ Usage:
   ${_ME} completions (check | install [-d | --download] | uninstall)
   ${_ME} disable (<ip> | <hostname> | <search string>)
   ${_ME} disabled
-  ${_ME} edit
+  ${_ME} edit | open
   ${_ME} enable (<ip> | <hostname> | <search string>)
   ${_ME} enabled
   ${_ME} file
@@ -1177,6 +1175,26 @@ edit() {
   fi
 }
 
+#=  open ################################################################### open
+
+desc "open" <<HEREDOC
+Usage:
+  ${_ME} open
+
+Description:
+  Open the ${HOSTS_PATH} file in your \$EDITOR.
+HEREDOC
+open() {
+  _verify_write_permissions
+
+  if [[ -z "${EDITOR}" ]]
+  then
+    _exit_1 printf "\$EDITOR not set.\\n"
+  else
+    "${EDITOR}" "${HOSTS_PATH}"
+  fi
+}
+
 #=  enable ############################################################### enable
 
 desc "enable" <<HEREDOC
@@ -1648,6 +1666,7 @@ _SUBCOMMANDS=(
   file
   help
   list
+  open
   remove
   search
   show
@@ -1764,3 +1783,6 @@ _main() {
 }
 
 _main
+
+#= Disable Debugging
+set +x
