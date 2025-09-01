@@ -1,21 +1,24 @@
 [![Build Status](https://img.shields.io/github/actions/workflow/status/xwmx/hosts/tests.yml?branch=master)](https://github.com/xwmx/hosts/actions)
 
-        __               __
-       / /_  ____  _____/ /______
-      / __ \/ __ \/ ___/ __/ ___/
-     / / / / /_/ (__  ) /_(__  )
-    /_/ /_/\____/____/\__/____/
 
-# Hosts
+.__                    __                              .___.__  __   
+|  |__   ____  _______/  |_  ______           ____   __| _/|__|/  |_ 
+|  |  \ /  _ \/  ___/\   __\/  ___/  ______ _/ __ \ / __ | |  \   __\
+|   Y  (  <_> )___ \  |  |  \___ \  /_____/ \  ___// /_/ | |  ||  |  
+|___|  /\____/____  > |__| /____  >          \___  >____ | |__||__|  
+     \/           \/            \/               \/     \/           
 
-`hosts` is a command line program for managing
+
+# hosts-edit
+
+`hosts-edit` is a command line program for managing
 [hosts file](https://en.wikipedia.org/wiki/Hosts_\(file\)) entries.
 
-`hosts` works with existing hosts files and entries, making it easier to add,
+`hosts-edit` works with existing hosts files and entries, making it easier to add,
 remove, comment, and search hosts file entries using simple, memorable
 commands.
 
-`hosts` is designed to be lightweight, easy to use, and contained in a
+`hosts-edit` is designed to be lightweight, easy to use, and contained in a
 single, portable script that can be `curl`ed into any environment.
 
 ## Installation
@@ -25,8 +28,8 @@ single, portable script that can be `curl`ed into any environment.
 To install with [Homebrew](http://brew.sh/):
 
 ```bash
-brew tap xwmx/taps
-brew install hosts
+brew tap LaurentFough/taps
+brew install hosts-edit
 ```
 
 ### npm
@@ -61,36 +64,36 @@ commands:
 
 ```bash
 # install using wget
-sudo wget https://raw.github.com/xwmx/hosts/master/hosts -O /usr/local/bin/hosts &&
-  sudo chmod +x /usr/local/bin/hosts &&
-  sudo hosts completions install
+sudo wget https://raw.github.com/xwmx/hosts/master/hosts-edit -O /usr/local/bin/hosts-edit &&
+  sudo chmod +x /usr/local/bin/hosts-edit &&
+  sudo hosts-edit completions install
 
 # install using curl
-sudo curl -L https://raw.github.com/xwmx/hosts/master/hosts -o /usr/local/bin/hosts &&
-  sudo chmod +x /usr/local/bin/hosts &&
-  sudo hosts completions install
+sudo curl -L https://raw.github.com/xwmx/hosts/master/hosts-edit -o /usr/local/bin/hosts-edit &&
+  sudo chmod +x /usr/local/bin/hosts-edit &&
+  sudo hosts-edit completions install
 ```
 
 ###### User-only Installation
 
-To install with just user permissions, simply add the `hosts` script to your
+To install with just user permissions, simply add the `hosts-edit` script to your
 `$PATH`. If you already have a `~/bin` directory, for example, you can use
 one of the following commands:
 
 ```bash
 # download with wget
-wget https://raw.github.com/xwmx/hosts/master/hosts -O ~/bin/hosts && chmod +x ~/bin/hosts
+wget https://raw.github.com/LaurentFough/hosts-edit/master/hosts-edit -O ~/bin/hosts-edit && chmod +x ~/bin/hosts-edit
 
 # download with curl
-curl -L https://raw.github.com/xwmx/hosts/master/hosts -o ~/bin/hosts && chmod +x ~/bin/hosts
+curl -L https://raw.github.com/LaurentFough/hosts-edit/master/hosts-edit -o ~/bin/hosts-edit && chmod +x ~/bin/hosts-edit
 ```
 
 Installing with just user permissions doesn't install the completions, but
-`hosts` works without them. If you have `sudo` access and want to install the
+`hosts-edit` works without them. If you have `sudo` access and want to install the
 completion scripts, run the following command:
 
 ```bash
-sudo hosts completions install
+sudo hosts-edit completions install
 ```
 
 ### Arch Linux
@@ -108,44 +111,44 @@ Homebrew, npm, bpkg, or Make. If you are installing `hosts` manually,
 
 ### Listing Entries
 
-`hosts` with no arguments lists the entries in the system's hosts file:
+`hosts-edit` with no arguments lists the entries in the system's hosts file:
 
 ```bash
-> hosts
+> hosts-edit
 127.0.0.1       localhost
 255.255.255.255 broadcasthost
 ::1             localhost
 fe80::1%lo0     localhost
 ```
 
-`hosts` called with a string or regular expression will search for entries
+`hosts-edit` called with a string or regular expression will search for entries
 that match.
 
 ```bash
-> hosts localhost
+> hosts-edit localhost
 127.0.0.1   localhost
 ::1         localhost
 fe80::1%lo0 localhost
 
-> hosts '\d\d\d'
+> hosts-edit '\d\d\d'
 127.0.0.1         localhost
 255.255.255.255   broadcasthost
 ```
 
 ### Adding Entries
 
-To add an entry, use `hosts add`:
+To add an entry, use `hosts-edit add`:
 
 ```bash
-> hosts add 127.0.0.1 example.com
+> hosts-edit add 127.0.0.1 example.com
 Added:
 127.0.0.1 example.com
 ```
 
-Run `hosts` or `hosts list` to see the new entry in the list:
+Run `hosts-edit` or `hosts-edit list` to see the new entry in the list:
 
 ```bash
-> hosts
+> hosts-edit
 127.0.0.1         localhost
 255.255.255.255   broadcasthost
 ::1               localhost
@@ -155,11 +158,11 @@ fe80::1%lo0       localhost
 
 ### Removing Entries
 
-To remove an entry, use `hosts remove`, which can take an IP
+To remove an entry, use `hosts-edit remove`, which can take an IP
 address, domain, or regular expression:
 
 ```bash
-> hosts remove example.com
+> hosts-edit remove example.com
 Removing the following entries:
 127.0.0.1	example.com
 Are you sure you want to proceed? [y/N] y
@@ -169,11 +172,11 @@ Removed:
 
 ### Blocking and Unblocking Domains
 
-`hosts` provides easy commands for blocking and unblocking domains with IPv4
+`hosts-edit` provides easy commands for blocking and unblocking domains with IPv4
 and IPv6 entries:
 
 ```bash
-> hosts block example.com
+> hosts-edit block example.com
 Added:
 127.0.0.1   example.com
 Added:
@@ -181,7 +184,7 @@ fe80::1%lo0 example.com
 Added:
 ::1         example.com
 
-> hosts unblock example.com
+> hosts-edit unblock example.com
 Removed:
 127.0.0.1   example.com
 Removed:
@@ -197,18 +200,18 @@ so it has no effect, but remains in the hosts file ready to be enabled
 again.
 
 ```bash
-> hosts
+> hosts-edit
 127.0.0.1         localhost
 255.255.255.255   broadcasthost
 ::1               localhost
 fe80::1%lo0       localhost
 127.0.0.1         example.com
 
-> hosts disable example.com
+> hosts-edit disable example.com
 Disabling:
 127.0.0.1	example.com
 
-> hosts
+> hosts-edit
 127.0.0.1         localhost
 255.255.255.255   broadcasthost
 ::1               localhost
@@ -218,11 +221,11 @@ Disabled:
 ---------
 127.0.0.1         example.com
 
-> hosts enable example.com
+> hosts-edit enable example.com
 Enabling:
 127.0.0.1	example.com
 
-> hosts
+> hosts-edit
 127.0.0.1         localhost
 255.255.255.255   broadcasthost
 ::1               localhost
@@ -232,26 +235,26 @@ fe80::1%lo0       localhost
 
 ### Backups
 
-Create backups of your hosts file with `hosts backups create`:
+Create backups of your hosts file with `hosts-edit backups create`:
 
 ```bash
-> hosts backups create
+> hosts-edit backups create
 Backed up to /etc/hosts--backup-20200101000000
 ```
 
-List your backups with `hosts backups`. If you have existing hosts file
-backups, `hosts` will include them:
+List your backups with `hosts-edit backups`. If you have existing hosts file
+backups, `hosts-edit` will include them:
 
 ```bash
-> hosts backups
+> hosts-edit backups
 hosts--backup-20200101000000
 hosts.bak
 ```
 
-`hosts backups compare` will open your hosts file with `diff`:
+`hosts-edit backups compare` will open your hosts file with `diff`:
 
 ```bash
-> hosts backups compare hosts--backup-20200101000000
+> hosts-edit backups compare hosts--backup-20200101000000
 --- /etc/hosts	2020-01-01 00:00:00.000000000
 +++ /etc/hosts--backup-20200101000000	2020-01-01 00:00:00.000000000
 @@ -8,3 +8,4 @@
@@ -261,10 +264,10 @@ hosts.bak
 +127.0.0.1        example.com
 ```
 
-View a backup with `hosts backups show`:
+View a backup with `hosts-edit backups show`:
 
 ```bash
-> hosts backups show hosts--backup-20200101000000
+> hosts-edit backups show hosts--backup-20200101000000
 ##
 # Host Database
 #
@@ -278,21 +281,21 @@ fe80::1%lo0     localhost
 127.0.0.1       example.com
 ```
 
-Restore a backup with `hosts backups restore`. Before a backup is
+Restore a backup with `hosts-edit backups restore`. Before a backup is
 restored, a new one is created to avoid data loss:
 
 ```bash
-> hosts backups restore hosts--backup-20200101000000
+> hosts-edit backups restore hosts--backup-20200101000000
 Backed up to /etc/hosts--backup-20200102000001
 Restored from backup: hosts--backup-20200101000000
 ```
 
 ### Viewing and Editing `/etc/hosts` Directly
 
-`hosts file` prints the raw contents of `/etc/hosts`:
+`hosts-edit file` prints the raw contents of `/etc/hosts`:
 
 ```bash
-> hosts file
+> hosts-edit file
 ##
 # Host Database
 #
@@ -305,10 +308,10 @@ Restored from backup: hosts--backup-20200101000000
 fe80::1%lo0     localhost
 ```
 
-`hosts edit` opens `/etc/hosts` in your editor:
+`hosts-edit edit` opens `/etc/hosts` in your editor:
 
 ```bash
-> hosts edit
+> hosts-edit edit
 ```
 
 ### `--auto-sudo`
@@ -321,33 +324,33 @@ To have this option always enabled, add the following line to your shell
 configuration (`.bashrc`, `.zshrc`, or similar):
 
 ```bash
-alias hosts="hosts --auto-sudo"
+alias hosts-edit="hosts-edit --auto-sudo"
 ```
 
 ## Help
 
 ```text
 Usage:
-  hosts [<search string>]
-  hosts add <ip> <hostname> [<comment>]
-  hosts backups [create | (compare | delete | restore | show) <filename>]
-  hosts block <hostname>...
-  hosts completions (check | install [-d | --download] | uninstall)
-  hosts disable (<ip> | <hostname> | <search string>)
-  hosts disabled
-  hosts edit
-  hosts enable (<ip> | <hostname> | <search string>)
-  hosts enabled
-  hosts file
-  hosts list [enabled | disabled | <search string>]
-  hosts search <search string>
-  hosts show (<ip> | <hostname> | <search string>)
-  hosts subcommands [--raw]
-  hosts remove (<ip> | <hostname> | <search string>) [--force]
-  hosts unblock <hostname>...
-  hosts --auto-sudo
-  hosts -h | --help
-  hosts --version
+  hosts-edit [<search string>]
+  hosts-edit add <ip> <hostname> [<comment>]
+  hosts-edit backups [create | (compare | delete | restore | show) <filename>]
+  hosts-edit block <hostname>...
+  hosts-edit completions (check | install [-d | --download] | uninstall)
+  hosts-edit disable (<ip> | <hostname> | <search string>)
+  hosts-edit disabled
+  hosts-edit edit
+  hosts-edit enable (<ip> | <hostname> | <search string>)
+  hosts-edit enabled
+  hosts-edit file
+  hosts-edit list [enabled | disabled | <search string>]
+  hosts-edit search <search string>
+  hosts-edit show (<ip> | <hostname> | <search string>)
+  hosts-edit subcommands [--raw]
+  hosts-edit remove (<ip> | <hostname> | <search string>) [--force]
+  hosts-edit unblock <hostname>...
+  hosts-edit --auto-sudo
+  hosts-edit -h | --help
+  hosts-edit --version
 
 Options:
   --auto-sudo  Run write commands with `sudo` automatically.
@@ -355,64 +358,64 @@ Options:
   --version    Display version information.
 
 Help:
-  hosts help [<command>]
+  hosts-edit help [<command>]
 ```
 
 For full usage, run:
 
 ```text
-hosts help
+hosts-edit help
 ```
 
 For help with a particular command, try:
 
 ```text
-hosts help <command name>
+hosts-edit help <command name>
 ```
 
 ## Subcommands
 
 <p align="center">
-  <a href="#hosts-1">(default)</a> •
-  <a href="#hosts-add">add</a> •
-  <a href="#hosts-backups">backups</a> •
-  <a href="#hosts-block">block</a> •
-  <a href="#hosts-completions">completions</a> •
-  <a href="#hosts-disable">disable</a> •
-  <a href="#hosts-disabled">disabled</a> •
-  <a href="#hosts-edit">edit</a> •
-  <a href="#hosts-enable">enable</a> •
-  <a href="#hosts-enabled">enabled</a> •
-  <a href="#hosts-file">file</a> •
-  <a href="#hosts-help">help</a> •
-  <a href="#hosts-list">list</a> •
-  <a href="#hosts-remove">remove</a> •
-  <a href="#hosts-search">search</a> •
-  <a href="#hosts-show">show</a> •
-  <a href="#hosts-subcommands">subcommands</a> •
-  <a href="#hosts-unblock">unblock</a> •
-  <a href="#hosts-version">version</a>
+  <a href="#hosts-edit-1">(default)</a> •
+  <a href="#hosts-edit-add">add</a> •
+  <a href="#hosts-edit-backups">backups</a> •
+  <a href="#hosts-edit-block">block</a> •
+  <a href="#hosts-edit-completions">completions</a> •
+  <a href="#hosts-edit-disable">disable</a> •
+  <a href="#hosts-edit-disabled">disabled</a> •
+  <a href="#hosts-edit-edit">edit</a> •
+  <a href="#hosts-edit-enable">enable</a> •
+  <a href="#hosts-edit-enabled">enabled</a> •
+  <a href="#hosts-edit-file">file</a> •
+  <a href="#hosts-edit-help">help</a> •
+  <a href="#hosts-edit-list">list</a> •
+  <a href="#hosts-edit-remove">remove</a> •
+  <a href="#hosts-edit-search">search</a> •
+  <a href="#hosts-edit-show">show</a> •
+  <a href="#hosts-edit-subcommands">subcommands</a> •
+  <a href="#hosts-edit-unblock">unblock</a> •
+  <a href="#hosts-edit-version">version</a>
 </p>
 
-### `hosts`
+### `hosts-edit`
 
 ```text
 Usage:
-  hosts [<search string>]
+  hosts-edit [<search string>]
 
 Description:
   List the existing IP / hostname pairs, optionally limited to a specified
   state. When provided with a seach string, all matching enabled entries will
   be printed.
 
-  Alias for `hosts list`
+  Alias for `hosts-edit list`
 ```
 
-### `hosts add`
+### `hosts-edit add`
 
 ```text
 Usage:
-  hosts add <ip> <hostname> [<comment>]
+  hosts-edit add <ip> <hostname> [<comment>]
 
 Description:
   Add a given IP address and hostname pair, along with an optional comment.
@@ -422,16 +425,16 @@ Exit status:
   1   Invalid parameters or entry exists.
 ```
 
-### `hosts backups`
+### `hosts-edit backups`
 
 ```text
 Usage:
-  hosts backups
-  hosts backups create
-  hosts backups compare <filename>
-  hosts backups delete  <filename>
-  hosts backups restore <filename> [--skip-backup]
-  hosts backups show    <filename>
+  hosts-edit backups
+  hosts-edit backups create
+  hosts-edit backups compare <filename>
+  hosts-edit backups delete  <filename>
+  hosts-edit backups restore <filename> [--skip-backup]
+  hosts-edit backups show    <filename>
 
 Subcommands:
   backups           List available backups.
@@ -452,11 +455,11 @@ Exit status:
   1   Invalid parameters or backup not found.
 ```
 
-### `hosts block`
+### `hosts-edit block`
 
 ```text
 Usage:
-  hosts block <hostname>...
+  hosts-edit block <hostname>...
 
 Description:
   Block one or more hostnames by adding new entries assigned to `127.0.0.1`
@@ -472,11 +475,11 @@ Exit status:
 - [jmdugan/blocklists](https://github.com/jmdugan/blocklists)
 - [notracking/hosts-blocklists](https://github.com/notracking/hosts-blocklists)
 
-### `hosts completions`
+### `hosts-edit completions`
 
 ```text
 Usage:
-  hosts completions (check | install [-d | --download] | uninstall)
+  hosts-edit completions (check | install [-d | --download] | uninstall)
 
 Options:
   -d, --download  Download the completion scripts and install.
@@ -490,11 +493,11 @@ Exit status:
   1   Invalid parameters or other error.
 ```
 
-### `hosts disable`
+### `hosts-edit disable`
 
 ```text
 Usage:
-  hosts disable (<ip> | <hostname> | <search string>)
+  hosts-edit disable (<ip> | <hostname> | <search string>)
 
 Description:
   Disable one or more entries based on a given ip address, hostname, or
@@ -505,35 +508,35 @@ Exit status:
   1   Invalid parameters or entry not found.
 ```
 
-### `hosts disabled`
+### `hosts-edit disabled`
 
 ```text
 Usage:
-  hosts disabled
+  hosts-edit disabled
 
 Description:
-  List all disabled entries. This is an alias for `hosts list disabled`.
+  List all disabled entries. This is an alias for `hosts-edit list disabled`.
 
 Exit status:
   0   One or more disabled entries found.
   1   Invalid parameters or no disabled entries found.
 ```
 
-### `hosts edit`
+### `hosts-edit edit`
 
 ```text
 Usage:
-  hosts edit
+  hosts-edit edit
 
 Description:
   Open the /etc/hosts file in your $EDITOR.
 ```
 
-### `hosts enable`
+### `hosts-edit enable`
 
 ```text
 Usage:
-  hosts enable (<ip> | <hostname> | <search string>)
+  hosts-edit enable (<ip> | <hostname> | <search string>)
 
 Description:
   Enable one or more disabled entries based on a given ip address, hostname,
@@ -544,45 +547,45 @@ Exit status:
   1   Invalid parameters or entry not found.
 ```
 
-### `hosts enabled`
+### `hosts-edit enabled`
 
 ```text
 Usage:
-  hosts enabled
+  hosts-edit enabled
 
 Description:
-  List all enabled entries. This is an alias for `hosts list enabled`.
+  List all enabled entries. This is an alias for `hosts-edit list enabled`.
 
 Exit status:
   0   One or more enabled entries found.
   1   Invalid parameters or no enabled entries found.
 ```
 
-### `hosts file`
+### `hosts-edit file`
 
 ```text
 Usage:
-  hosts file
+  hosts-edit file
 
 Description:
   Print the entire contents of the /etc/hosts file.
 ```
 
-### `hosts help`
+### `hosts-edit help`
 
 ```text
 Usage:
-  hosts help [<command>]
+  hosts-edit help [<command>]
 
 Description:
   Display help information for hosts or a specified command.
 ```
 
-### `hosts list`
+### `hosts-edit list`
 
 ```text
 Usage:
-  hosts list [enabled | disabled | <search string>]
+  hosts-edit list [enabled | disabled | <search string>]
 
 Description:
   List the existing IP / hostname pairs, optionally limited to a specified
@@ -594,12 +597,12 @@ Exit status:
   1   Invalid parameters or entry not found.
 ```
 
-### `hosts remove`
+### `hosts-edit remove`
 
 ```text
 Usage:
-  hosts remove (<ip> | <hostname> | <search string>) [--force]
-  hosts remove <ip> <hostname>
+  hosts-edit remove (<ip> | <hostname> | <search string>) [--force]
+  hosts-edit remove <ip> <hostname>
 
 Options:
   --force  Skip the confirmation prompt.
@@ -614,11 +617,11 @@ Exit status:
   1   Invalid parameters or entry not found.
 ```
 
-### `hosts search`
+### `hosts-edit search`
 
 ```text
 Usage:
-  hosts search <search string>
+  hosts-edit search <search string>
 
 Description:
   Search entries for <search string>.
@@ -628,11 +631,11 @@ Exit status:
   1   Invalid parameters or entry not found.
 ```
 
-### `hosts show`
+### `hosts-edit show`
 
 ```text
 Usage:
-  hosts show (<ip> | <hostname> | <search string>)
+  hosts-edit show (<ip> | <hostname> | <search string>)
 
 Description:
   Print entries matching a given IP address, hostname, or search string.
@@ -642,11 +645,11 @@ Exit status:
   1   Invalid parameters or entry not found.
 ```
 
-### `hosts subcommands`
+### `hosts-edit subcommands`
 
 ```text
 Usage:
-  hosts subcommands [--raw]
+  hosts-edit subcommands [--raw]
 
 Options:
   --raw  Display the subcommands list without formatting.
@@ -655,11 +658,11 @@ Description:
   Display the list of available subcommands.
 ```
 
-### `hosts unblock`
+### `hosts-edit unblock`
 
 ```text
 Usage:
-  hosts unblock <hostname>...
+  hosts-edit unblock <hostname>...
 
 Description:
   Unblock one or more hostnames by removing the entries from the hosts file.
@@ -669,11 +672,11 @@ Exit status:
   1   Invalid parameters or entry not found
 ```
 
-### `hosts version`
+### `hosts-edit version`
 
 ```text
 Usage:
-  hosts (version | --version)
+  hosts-edit (version | --version)
 
 Description:
   Display the current program version.
