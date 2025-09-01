@@ -1,43 +1,55 @@
 #!/usr/bin/env bash
-###############################################################################
-#     __               __
-#    / /_  ____  _____/ /______
-#   / __ \/ __ \/ ___/ __/ ___/
-#  / / / / /_/ (__  ) /_(__  )
-# /_/ /_/\____/____/\__/____/
-#
-# A program for managing host file entries.
-#
-# https://github.com/xwmx/hosts
-#
-# Based on Bash Boilerplate: https://github.com/xwmx/bash-boilerplate
-#
-# The MIT License (MIT)
-#
-# Copyright (c) 2015 William Melody • hi@williammelody.com
-#
-# Permission is hereby granted, free of charge, to any person obtaining a copy
-# of this software and associated documentation files (the "Software"), to deal
-# in the Software without restriction, including without limitation the rights
-# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-# copies of the Software, and to permit persons to whom the Software is
-# furnished to do so, subject to the following conditions:
-#
-# The above copyright notice and this permission notice shall be included in
-# all copies or substantial portions of the Software.
-#
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-# SOFTWARE.
-###############################################################################
 
-###############################################################################
-# Strict Mode
-###############################################################################
+#= ##############################################################################
+#= 
+#= .__                    __                              .___.__  __   
+#= |  |__   ____  _______/  |_  ______           ____   __| _/|__|/  |_ 
+#= |  |  \ /  _ \/  ___/\   __\/  ___/  ______ _/ __ \ / __ | |  \   __\
+#= |   Y  (  <_> )___ \  |  |  \___ \  /_____/ \  ___// /_/ | |  ||  |  
+#= |___|  /\____/____  > |__| /____  >          \___  >____ | |__||__|  
+#=      \/           \/            \/               \/     \/           
+#= 
+#=  A program for managing host file entries.
+#= 
+#=  https://github.com/xwmx/hosts
+#= 
+#=  Based on Bash Boilerplate: https://github.com/xwmx/bash-boilerplate
+#= 
+#=  The MIT License (MIT)
+#= 
+#=  Copyright (c) 2015 William Melody • hi@williammelody.com
+#= 
+#=  Permission is hereby granted, free of charge, to any person obtaining a copy
+#=  of this software and associated documentation files (the "Software"), to deal
+#=  in the Software without restriction, including without limitation the rights
+#=  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+#=  copies of the Software, and to permit persons to whom the Software is
+#=  furnished to do so, subject to the following conditions:
+#= 
+#=  The above copyright notice and this permission notice shall be included in
+#=  all copies or substantial portions of the Software.
+#= 
+#=  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+#=  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+#=  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+#=  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+#=  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+#=  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+#=  SOFTWARE.
+#= ##############################################################################
+
+#= ##############################################################################
+#=  Strict Mode
+#= ##############################################################################
+
+
+if [[ -z $_DEBUG ]]; then
+	set -x
+elif [[ -z $_USE_DEBUG ]]; then
+	set -x
+else
+	set +x
+fi
 
 set -o nounset
 set -o errexit
@@ -45,54 +57,59 @@ set -o pipefail
 set -o noglob
 IFS=$'\n\t'
 
-###############################################################################
-# Environment & Globals
-###############################################################################
+#= ##############################################################################
+#=  Environment & Globals
+#= ##############################################################################
 
-# $_VERSION
-#
-# The most recent program version.
-_VERSION="3.6.4"
+#=  $_VERSION
+#= 
+#=  The most recent program version.
+_VERSION="3.6.5"
 
-# $_ME
-#
-# This program's basename.
+#=  $_ME
+#= 
+#=  This program's basename.
 _ME="$(basename "${0}")"
 
-# $HOSTS_DEFAULT_SUBCOMMAND
-#
-# The command to be run by default, when no command name is specified.
+#=  $HOSTS_DEFAULT_SUBCOMMAND
+#= 
+#=  The command to be run by default, when no command name is specified.
 [[ -n "${HOSTS_DEFAULT_COMMAND:-}" ]] &&
-  HOSTS_DEFAULT_SUBCOMMAND="${HOSTS_DEFAULT_COMMAND}"
+HOSTS_DEFAULT_SUBCOMMAND="${HOSTS_DEFAULT_COMMAND}"
 HOSTS_DEFAULT_SUBCOMMAND="${HOSTS_DEFAULT_SUBCOMMAND:-list}"
 
-# $HOSTS_PATH
-#
-# The path to the hosts file. This will almost always be /etc/hosts
-HOSTS_PATH="${HOSTS_PATH:-/etc/hosts}"
+#=  $HOSTS_PATH
+#= 
+#=  The path to the hosts file. This will almost always be /etc/hosts
+if [[ $( uname -s ) = "Darwin" ]]; then
+	HOSTS_PATH="${HOSTS_PATH:-/private/etc/hosts}"
+else
+	HOSTS_PATH="${HOSTS_PATH:-/etc/hosts}"
+fi
 
-# $_REPO
-#
-# The <user>/<repo> identifier for the git repository.
-_REPO="xwmx/hosts"
+#=  $_REPO
+#= 
+#=  The <user>/<repo> identifier for the git repository.
+#_REPO="xwmx/hosts"
+_REPO="LaurentFough/hosts-edit"
 
-# $_REPO_RAW_URL
-#
-# The base URL for raw files.
+#=  $_REPO_RAW_URL
+#= 
+#=  The base URL for raw files.
 _REPO_RAW_URL="https://raw.githubusercontent.com/${_REPO}/master"
 
-###############################################################################
-# Debug
-###############################################################################
+#= ##############################################################################
+#=  Debug
+#= ##############################################################################
 
-# _debug()
-#
-# Usage:
-#   _debug printf "Debug info. Variable: %s\\n" "$0"
-#
-# A simple function for executing a specified command if the `$_USE_DEBUG`
-# variable has been set. The command is expected to print a message and
-# should typically be either `echo`, `printf`, or `cat`.
+#=  _debug()
+#= 
+#=  Usage:
+#=    _debug printf "Debug info. Variable: %s\\n" "$0"
+#= 
+#=  A simple function for executing a specified command if the `$_USE_DEBUG`
+#=  variable has been set. The command is expected to print a message and
+#=  should typically be either `echo`, `printf`, or `cat`.
 __DEBUG_COUNTER=0
 _debug() {
   if [[ "${_USE_DEBUG:-"0"}" -eq 1 ]]
@@ -107,19 +124,19 @@ _debug() {
   fi
 }
 
-###############################################################################
-# Error Messaging
-###############################################################################
+#= ##############################################################################
+#=  Error Messaging
+#= ##############################################################################
 
-# _exit_1()
-#
-# Usage:
-#   _exit_1 <command>
-#
-# Description:
-#   Exit with status 1 after executing the specified with output redirected
-#   to standard error. The command is expected to print a message and should
-#   typically be either `echo`, `printf`, or `cat`.
+#=  _exit_1()
+#= 
+#=  Usage:
+#=    _exit_1 <command>
+#= 
+#=  Description:
+#=    Exit with status 1 after executing the specified with output redirected
+#=    to standard error. The command is expected to print a message and should
+#=    typically be either `echo`, `printf`, or `cat`.
 _exit_1() {
   {
     printf "%s " "$(tput setaf 1)!$(tput sgr0)"
@@ -128,15 +145,15 @@ _exit_1() {
   exit 1
 }
 
-# _return_1()
-#
-# Usage:
-#   _return_1 <command>
-#
-# Description:
-#   Return with status 1 after executing the specified with output redirected
-#   to standard error. The command is expected to print a message and should
-#   typically be either `echo`, `printf`, or `cat`.
+#=  _return_1()
+#= 
+#=  Usage:
+#=    _return_1 <command>
+#= 
+#=  Description:
+#=    Return with status 1 after executing the specified with output redirected
+#=    to standard error. The command is expected to print a message and should
+#=    typically be either `echo`, `printf`, or `cat`.
 _return_1() {
   {
     printf "%s " "$(tput setaf 1)!$(tput sgr0)"
@@ -145,15 +162,15 @@ _return_1() {
   return 1
 }
 
-# _warn()
-#
-# Usage:
-#   _warn <command>
-#
-# Description:
-#   Print the specified command with output redirected to standard error.
-#   The command is expected to print a message and should typically be either
-#   `echo`, `printf`, or `cat`.
+#=  _warn()
+#= 
+#=  Usage:
+#=    _warn <command>
+#= 
+#=  Description:
+#=    Print the specified command with output redirected to standard error.
+#=    The command is expected to print a message and should typically be either
+#=    `echo`, `printf`, or `cat`.
 _warn() {
   {
     printf "%s " "$(tput setaf 1)!$(tput sgr0)"
@@ -161,29 +178,29 @@ _warn() {
   } 1>&2
 }
 
-###############################################################################
-# Helpers
-###############################################################################
+#= ##############################################################################
+#=  Helpers
+#= ##############################################################################
 
-# Space and tab for regular expressions
-#
-# sed regular expressions have slightly different behaviors dependending on
-# the environment, and POSIX [[:space:]] matches whitespace characters other
-# than just space and tab. These variables provide an easier, portable way to
-# test for just these two characters.
+#=  Space and tab for regular expressions
+#= 
+#=  sed regular expressions have slightly different behaviors dependending on
+#=  the environment, and POSIX [[:space:]] matches whitespace characters other
+#=  than just space and tab. These variables provide an easier, portable way to
+#=  test for just these two characters.
 export _TAB_=$'\t'
 export _SPACE_=$' '
 export _TAB_SPACE_="${_TAB_}${_SPACE_}"
 export _TAB_SPACE_CC_="[${_TAB_SPACE_}]"
 
-# _contains()
-#
-# Usage:
-#   _contains "${item}" "${list[@]}"
-#
-# Returns:
-#   0  If the item is included in the list.
-#   1  If not.
+#=  _contains()
+#= 
+#=  Usage:
+#=    _contains "${item}" "${list[@]}"
+#= 
+#=  Returns:
+#=    0  If the item is included in the list.
+#=    1  If not.
 _contains() {
   local _query="${1:-}"
   shift
@@ -202,14 +219,14 @@ _contains() {
   return 1
 }
 
-# _download_from()
-#
-# Usage:
-#   _download_from <url> [<outfile>]
-#
-# Description:
-#   Download the file at <url> and print to standard output or <outfile>.
-#   Uses `curl` if available, falling back to `wget`.
+#=  _download_from()
+#= 
+#=  Usage:
+#=    _download_from <url> [<outfile>]
+#= 
+#=  Description:
+#=    Download the file at <url> and print to standard output or <outfile>.
+#=    Uses `curl` if available, falling back to `wget`.
 _download_from() {
   local _downloaded=0
   local _target_path="${2:-}"
@@ -250,18 +267,18 @@ _download_from() {
   fi
 }
 
-# _join()
-#
-# Usage:
-#   _join "," a b c
-#   _join "${an_array[@]}"
-#
-# Returns:
-#   The list or array of items joined into a string with elements divided by
-#   the optional separator if one is provided.
-#
-# More information:
-#   https://stackoverflow.com/a/17841619
+#=  _join()
+#= 
+#=  Usage:
+#=    _join "," a b c
+#=    _join "${an_array[@]}"
+#= 
+#=  Returns:
+#=    The list or array of items joined into a string with elements divided by
+#=    the optional separator if one is provided.
+#= 
+#=  More information:
+#=    https://stackoverflow.com/a/17841619
 _join() {
   local _delimiter="${1}"
   shift
@@ -270,10 +287,10 @@ _join() {
   printf "%s" "${@/#/${_delimiter}}" | tr -d '[:space:]'
 }
 
-# _print_entries()
-#
-# Usage:
-#   _print_entries <entries>
+#=  _print_entries()
+#= 
+#=  Usage:
+#=    _print_entries <entries>
 _print_entries() {
   local _input="${1:-}"
   [[ -n "${_input}" ]] || return 0
@@ -332,13 +349,13 @@ _print_entries() {
   done <<< "${_input}"
 }
 
-# _sed_i()
-#
-# `sed -i` takes an extension on macOS, but that extension can cause errors in
-# GNU `sed`.
-#
-# https://stackoverflow.com/q/43171648
-# https://stackoverflow.com/a/16746032
+#=  _sed_i()
+#= 
+#=  `sed -i` takes an extension on macOS, but that extension can cause errors in
+#=  GNU `sed`.
+#= 
+#=  https://stackoverflow.com/q/43171648
+#=  https://stackoverflow.com/a/16746032
 _sed_i() {
   if sed --help >/dev/null 2>&1
   then # GNU
@@ -348,14 +365,14 @@ _sed_i() {
   fi
 }
 
-# _verify_write_permissions
-#
-# Usage:
-#   _verify_write_permissions
-#
-# Print a helpful error message when the specified operation can't be
-# performed due to the lack of write permissions. If `$_AUTO_SUDO` is enabled,
-# then run the command with sudo and exit with the command's exit value.
+#=  _verify_write_permissions
+#= 
+#=  Usage:
+#=    _verify_write_permissions
+#= 
+#=  Print a helpful error message when the specified operation can't be
+#=  performed due to the lack of write permissions. If `$_AUTO_SUDO` is enabled,
+#=  then run the command with sudo and exit with the command's exit value.
 _verify_write_permissions() {
   if [[ ! -w "${HOSTS_PATH}" ]]
   then
@@ -374,40 +391,40 @@ sudo !!\\n"
   fi
 }
 
-###############################################################################
-# desc
-###############################################################################
+#= ##############################################################################
+#=  desc
+#= ##############################################################################
 
-# desc()
-#
-# Usage:
-#   desc <name> <description>
-#   desc --get <name>
-#
-# Options:
-#   --get  Print the description for <name> if one has been set.
-#
-# Examples:
-# ```
-#   desc "list" <<HEREDOC
-# Usage:
-#   ${_ME} list
-#
-# Description:
-#   List items.
-# HEREDOC
-#
-# desc --get "list"
-# ```
-#
-# Set or print a description for a specified command or function <name>. The
-# <description> text can be passed as the second argument or as standard input.
-#
-# To make the <description> text available to other functions, `desc()` assigns
-# the text to a variable with the format `$___desc_<name>`.
-#
-# When the `--get` option is used, the description for <name> is printed, if
-# one has been set.
+#=  desc()
+#= 
+#=  Usage:
+#=    desc <name> <description>
+#=    desc --get <name>
+#= 
+#=  Options:
+#=    --get  Print the description for <name> if one has been set.
+#= 
+#=  Examples:
+#=  ```
+#=    desc "list" <<HEREDOC
+#=  Usage:
+#=    ${_ME} list
+#= 
+#=  Description:
+#=    List items.
+#=  HEREDOC
+#= 
+#=  desc --get "list"
+#=  ```
+#= 
+#=  Set or print a description for a specified command or function <name>. The
+#=  <description> text can be passed as the second argument or as standard input.
+#= 
+#=  To make the <description> text available to other functions, `desc()` assigns
+#=  the text to a variable with the format `$___desc_<name>`.
+#= 
+#=  When the `--get` option is used, the description for <name> is printed, if
+#=  one has been set.
 desc() {
   _debug printf "desc() \${*}: %s\\n" "$@"
   [[ -z "${1:-}" ]] && _exit_1 printf "desc(): No command name specified.\\n"
@@ -443,11 +460,11 @@ HEREDOC
   fi
 }
 
-###############################################################################
-# Help
-###############################################################################
+#= ##############################################################################
+#=  Help
+#= ##############################################################################
 
-# help ################################################################### help
+#=  help ################################################################### help
 
 desc "help" <<HEREDOC
 Usage:
@@ -506,34 +523,34 @@ HEREDOC
   fi
 }
 
-###############################################################################
-# Commands
-# ========.....................................................................
-#
-# Example command group structure:
-#
-# desc example ""   - Optional. A short description for the command.
-# example() { : }   - The command called by the user.
-#
-#
-# desc example <<HEREDOC
-#   Usage:
-#     ${_ME} example
-#
-#   Description:
-#     Print "Hello, World!"
-#
-#     For usage formatting conventions see:
-#     - http://docopt.org/
-#     - http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap12.html
-# HEREDOC
-# example() {
-#   printf "Hello, World!\\n"
-# }
-#
-###############################################################################
+#= ##############################################################################
+#=  Commands
+#=  ========.....................................................................
+#= 
+#=  Example command group structure:
+#= 
+#=  desc example ""   - Optional. A short description for the command.
+#=  example() { : }   - The command called by the user.
+#= 
+#= 
+#=  desc example <<HEREDOC
+#=    Usage:
+#=      ${_ME} example
+#= 
+#=    Description:
+#=      Print "Hello, World!"
+#= 
+#=      For usage formatting conventions see:
+#=      - http://docopt.org/
+#=      - http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap12.html
+#=  HEREDOC
+#=  example() {
+#=    printf "Hello, World!\\n"
+#=  }
+#= 
+#= ##############################################################################
 
-# add ##################################################################### add
+#=  add ##################################################################### add
 
 desc "add" <<HEREDOC
 Usage:
@@ -608,7 +625,7 @@ add() {
   fi
 }
 
-# backups ############################################################# backups
+#=  backups ############################################################# backups
 
 desc "backups" <<HEREDOC
 Usage:
@@ -763,7 +780,7 @@ backups() {
   esac
 }
 
-# block ################################################################# block
+#=  block ################################################################# block
 
 desc "block" <<HEREDOC
 Usage:
@@ -795,7 +812,7 @@ block() {
   done
 }
 
-# completions ##################################################### completions
+#=  completions ##################################################### completions
 
 desc "completions" <<HEREDOC
 Usage:
@@ -813,8 +830,8 @@ Exit status:
   1   Invalid parameters or other error.
 HEREDOC
 completions() {
-  local _BASH_COMP_NAME="hosts"
-  local _ZSH_COMP_NAME="_hosts"
+  local _BASH_COMP_NAME="hosts-edit"
+  local _ZSH_COMP_NAME="_hosts-edit"
 
   # Usage: _completions_check
   _completions_check() {
@@ -1057,7 +1074,7 @@ HEREDOC
   esac
 }
 
-# disable ############################################################# disable
+#=  disable ############################################################# disable
 
 desc "disable" <<HEREDOC
 Usage:
@@ -1123,14 +1140,14 @@ disable() {
   fi
 }
 
-# disabled ########################################################### disabled
+#=  disabled ########################################################### disabled
 
 desc "disabled" <<HEREDOC
 Usage:
   ${_ME} disabled
 
 Description:
-  List all disabled entries. This is an alias for \`hosts list disabled\`.
+  List all disabled entries. This is an alias for \`hosts-edit list disabled\`.
 
 Exit status:
   0   One or more disabled entries found.
@@ -1140,7 +1157,7 @@ disabled() {
   list disabled
 }
 
-# edit ################################################################### edit
+#=  edit ################################################################### edit
 
 desc "edit" <<HEREDOC
 Usage:
@@ -1160,7 +1177,7 @@ edit() {
   fi
 }
 
-# enable ############################################################### enable
+#=  enable ############################################################### enable
 
 desc "enable" <<HEREDOC
 Usage:
@@ -1226,14 +1243,14 @@ enable() {
   fi
 }
 
-# enabled ############################################################# enabled
+#=  enabled ############################################################# enabled
 
 desc "enabled" <<HEREDOC
 Usage:
   ${_ME} enabled
 
 Description:
-  List all enabled entries. This is an alias for \`hosts list enabled\`.
+  List all enabled entries. This is an alias for \`hosts-edit list enabled\`.
 
 Exit status:
   0   One or more enabled entries found.
@@ -1243,7 +1260,7 @@ enabled() {
   list enabled
 }
 
-# file ################################################################### file
+#=  file ################################################################### file
 
 desc "file" <<HEREDOC
 Usage:
@@ -1256,7 +1273,7 @@ file() {
   cat "${HOSTS_PATH}"
 }
 
-# list ################################################################### list
+#=  list ################################################################### list
 
 desc "list" <<HEREDOC
 Usage:
@@ -1314,7 +1331,7 @@ list() {
   fi
 }
 
-# remove ############################################################### remove
+#=  remove ############################################################### remove
 
 desc "remove" <<HEREDOC
 Usage:
@@ -1464,7 +1481,7 @@ remove() {
 desc "delete" "$(desc --get 'remove')"
 delete() { remove "${@}"; }
 
-# search ############################################################### search
+#=  search ############################################################### search
 
 desc "search" <<HEREDOC
 Usage:
@@ -1487,7 +1504,7 @@ search() {
   list "$@"
 }
 
-# show ################################################################### show
+#=  show ################################################################### show
 
 desc "show" <<HEREDOC
 Usage:
@@ -1535,7 +1552,7 @@ show() {
   fi
 }
 
-# subcommands ##################################################### subcommands
+#=  subcommands ##################################################### subcommands
 
 desc "subcommands" <<HEREDOC
 Usage:
@@ -1559,7 +1576,7 @@ subcommands() {
 desc "commands" "$(desc --get 'subcommands')"
 commands() { subcommands "${@}"; }
 
-# unblock ############################################################# unblock
+#=  unblock ############################################################# unblock
 
 desc "unblock" <<HEREDOC
 Usage:
@@ -1590,7 +1607,7 @@ unblock() {
   done
 }
 
-# version ############################################################# version
+#=  version ############################################################# version
 
 desc "version" <<HEREDOC
 Usage:
@@ -1605,11 +1622,11 @@ version() {
   printf "%s\\n" "${_VERSION}"
 }
 
-###############################################################################
-# Load Program & Run
-###############################################################################
+#= ##############################################################################
+#=  Load Program & Run
+#= ##############################################################################
 
-# Parse Options ###############################################################
+#=  Parse Options ###############################################################
 
 _SUBCOMMAND=
 _COMMAND_PARAMETERS=()
@@ -1678,17 +1695,17 @@ _debug printf                           \
   "\${_COMMAND_PARAMETERS[*]:-}: %s\\n" \
   "${_COMMAND_PARAMETERS[*]:-}"
 
-# Load Commands ###############################################################
+#=  Load Commands ###############################################################
 
-# Initialize $_DEFINED_SUBCOMMANDS array.
+#=  Initialize $_DEFINED_SUBCOMMANDS array.
 _DEFINED_SUBCOMMANDS=()
 
-# _load_subcommands()
-#
-# Usage:
-#   _load_subcommands
-#
-# Loads all of the commands sourced in the environment.
+#=  _load_subcommands()
+#= 
+#=  Usage:
+#=    _load_subcommands
+#= 
+#=  Loads all of the commands sourced in the environment.
 _load_subcommands() {
   _debug printf "_load_subcommands(): entering...\\n"
 
@@ -1717,16 +1734,16 @@ _load_subcommands() {
     "${_DEFINED_SUBCOMMANDS[*]:-}"
 }
 
-# Main ########################################################################
+#=  Main ########################################################################
 
-# _main()
-#
-# Usage:
-#   _main
-#
-# The primary function for starting the program.
-#
-# NOTE: must be called at end of program after all commands have been defined.
+#=  _main()
+#= 
+#=  Usage:
+#=    _main
+#= 
+#=  The primary function for starting the program.
+#= 
+#=  NOTE: must be called at end of program after all commands have been defined.
 _main() {
   _debug printf "main(): entering...\\n"
   _debug printf "main() \${_SUBCOMMAND} (upon entering): %s\\n" "${_SUBCOMMAND}"
