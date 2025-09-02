@@ -33,11 +33,10 @@ brew install hosts-edit
 ```
 
 ### npm
-
-To install with [npm](https://www.npmjs.com/package/hosts.sh):
+To install with [npm](https://www.npmjs.com/package/hosts-edit.sh):
 
 ```bash
-npm install --global hosts.sh
+npm install --global hosts-edit.sh
 ```
 
 ### bpkg
@@ -45,7 +44,7 @@ npm install --global hosts.sh
 To install with [bpkg](https://github.com/bpkg/bpkg):
 
 ```bash
-bpkg install xwmx/hosts
+bpkg install LaurentFough/hosts-edit
 ```
 
 ### Make
@@ -64,12 +63,12 @@ commands:
 
 ```bash
 # install using wget
-sudo wget https://raw.github.com/xwmx/hosts/master/hosts-edit -O /usr/local/bin/hosts-edit &&
+sudo wget https://raw.github.com/LaurentFough/hosts/master/hosts-edit -O /usr/local/bin/hosts-edit &&
   sudo chmod +x /usr/local/bin/hosts-edit &&
   sudo hosts-edit completions install
 
 # install using curl
-sudo curl -L https://raw.github.com/xwmx/hosts/master/hosts-edit -o /usr/local/bin/hosts-edit &&
+sudo curl -L https://raw.github.com/LaurentFough/hosts/master/hosts-edit -o /usr/local/bin/hosts-edit &&
   sudo chmod +x /usr/local/bin/hosts-edit &&
   sudo hosts-edit completions install
 ```
