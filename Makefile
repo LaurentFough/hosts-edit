@@ -1,4 +1,4 @@
-BIN ?= hosts
+BIN ?= hosts-edit
 PREFIX ?= /usr/local
 
 install:
