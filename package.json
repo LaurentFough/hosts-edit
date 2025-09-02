@@ -1,23 +1,23 @@
 {
-  "name": "hosts.sh",
-  "version": "3.6.4",
+  "name": "hosts-edit.sh",
+  "version": "3.6.5",
   "description": "A command line tool for managing hosts file entries.",
   "global": true,
   "install": "make install",
   "bin": {
-    "hosts": "./hosts"
+    "hosts": "./hosts-edit"
   },
   "directories": {
     "test": "test"
   },
   "scripts": {
     "test": "bats test",
-    "postinstall": "./hosts completions install",
-    "preuninstall": "./hosts completions uninstall"
+    "postinstall": "./hosts-edit completions install",
+    "preuninstall": "./hosts-edit completions uninstall"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/xwmx/hosts.git"
+    "url": "git+https://github.com/LaurentFough/hosts-edit.git"
   },
   "author": "William Melody",
   "license": "MIT",
